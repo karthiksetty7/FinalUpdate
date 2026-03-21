@@ -1,4 +1,4 @@
-/* MAIN */
+/* MAIN */ 
 .trending {
   flex: 1;
   padding: 20px;
@@ -81,6 +81,11 @@
 /* ========================= */
 
 @media (max-width: 768px) {
+  .trending {
+    padding-top: 80px;   /* ✅ FIX: header space */
+    padding-bottom: 80px; /* ✅ FIX: bottom navbar space */
+  }
+
   .trending__card {
     flex-direction: column;
   }
@@ -97,5 +102,7 @@
 @media (max-width: 480px) {
   .trending {
     padding: 10px;
+    padding-top: 70px;   /* ✅ FIX */
+    padding-bottom: 70px; /* ✅ FIX */
   }
 }
