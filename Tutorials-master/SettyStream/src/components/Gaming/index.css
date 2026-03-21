@@ -70,17 +70,24 @@
 /* ========================= */
 
 @media (max-width: 768px) {
+  .gaming {
+    padding-top: 80px;   /* ✅ FIX: header space */
+    padding-bottom: 80px; /* ✅ FIX: bottom navbar space */
+  }
+
   .gaming__grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 480px) {
-  .gaming__grid {
-    grid-template-columns: 1fr;
-  }
-
   .gaming {
     padding: 10px;
+    padding-top: 70px;   /* ✅ FIX */
+    padding-bottom: 70px; /* ✅ FIX */
+  }
+
+  .gaming__grid {
+    grid-template-columns: 1fr;
   }
 }
