@@ -10,62 +10,81 @@ import BackgroundContext from '../../BackgroundContext'
 
 import './index.css'
 
-const apiStatus = {
-  INITIAL: 'INITIAL',
-  LOADING: 'LOADING',
-  SUCCESS: 'SUCCESS',
-  FAILURE: 'FAILURE',
+const apiStatusConstants = {
+  initial: 'INITIAL',
+  loading: 'LOADING',
+  success: 'SUCCESS',
+  failure: 'FAILURE',
 }
 
-class SpecificVideo extends Component {
+class VideoItemDetails extends Component {
   state = {
-    videoDetails: null,
-    status: apiStatus.INITIAL,
+    videoDetails: {},
+    apiStatus: apiStatusConstants.initial,
   }
 
   componentDidMount() {
-    this.fetchVideo()
+    this.getVideoDetails()
   }
 
-  fetchVideo = async () => {
-    this.setState({status: apiStatus.LOADING})
-
+  getVideoDetails = async () => {
+    this.setState({apiStatus: apiStatusConstants.loading})
     const {match} = this.props
+    const {id} = match.params
+
     const jwtToken = Cookies.get('jwt_token')
 
-    const response = await fetch(
-      `https://apis.ccbp.in/videos/${match.params.id}`,
-      {
-        headers: {Authorization: `Bearer ${jwtToken}`},
+    const url = `https://apis.ccbp.in/videos/${id}`
+
+    const options = {
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
       },
-    )
+      method: 'GET',
+    }
+
+    const response = await fetch(url, options)
+    const data = await response.json()
 
     if (response.ok) {
-      const data = await response.json()
-      const v = data.video_details
-
-      const updated = {
-        id: v.id,
-        title: v.title,
-        videoUrl: v.video_url,
-        viewCount: v.view_count,
-        publishedAt: v.published_at,
-        description: v.description,
+      const updatedData = {
+        id: data.video_details.id,
+        title: data.video_details.title,
+        videoUrl: data.video_details.video_url,
+        thumbnailUrl: data.video_details.thumbnail_url,
+        viewCount: data.video_details.view_count,
+        description: data.video_details.description,
+        publishedAt: data.video_details.published_at,
         channel: {
-          name: v.channel.name,
-          profileImageUrl: v.channel.profile_image_url,
-          subscriberCount: v.channel.subscriber_count,
+          name: data.video_details.channel.name,
+          profileImageUrl: data.video_details.channel.profile_image_url,
+          subscriberCount: data.video_details.channel.subscriber_count,
         },
       }
 
       this.setState({
-        videoDetails: updated,
-        status: apiStatus.SUCCESS,
+        videoDetails: updatedData,
+        apiStatus: apiStatusConstants.success,
       })
     } else {
-      this.setState({status: apiStatus.FAILURE})
+      this.setState({apiStatus: apiStatusConstants.failure})
     }
   }
+
+  renderLoader = () => (
+    <div className='loader-container'>
+      <Loader type='ThreeDots' color='#2563eb' height='50' width='50' />
+    </div>
+  )
+
+  renderFailure = () => (
+    <div className='video-page__error'>
+      <h2>Something went wrong</h2>
+      <button type='button' onClick={this.getVideoDetails}>
+        Retry
+      </button>
+    </div>
+  )
 
   renderVideo = value => {
     const {videoDetails} = this.state
@@ -75,85 +94,69 @@ class SpecificVideo extends Component {
 
     return (
       <div className='video-page__container'>
-        {/* VIDEO PLAYER */}
-        <ReactPlayer url={videoDetails.videoUrl} controls width='100%' />
+        <div className='video-page__content'>
+          <ReactPlayer url={videoDetails.videoUrl} controls width='100%' />
 
-        {/* TITLE */}
-        <h2 className='video-page__title'>{videoDetails.title}</h2>
+          <h2 className='video-page__title'>{videoDetails.title}</h2>
 
-        {/* ACTIONS */}
-        <div className='video-page__actions'>
-          <p>{videoDetails.viewCount} views</p>
+          <div className='video-page__actions'>
+            <p>{videoDetails.viewCount} views</p>
 
-          <div className='video-page__buttons'>
-            <button type='button' className='video-btn'>
-              <BiLike /> Like
-            </button>
+            <div className='video-page__buttons'>
+              <button type='button' className='video-btn'>
+                <BiLike /> Like
+              </button>
 
-            <button type='button' className='video-btn'>
-              <BiDislike /> Dislike
-            </button>
+              <button type='button' className='video-btn'>
+                <BiDislike /> Dislike
+              </button>
 
-            <button
-              type='button'
-              className={`video-btn ${isSaved ? 'active' : ''}`}
-              onClick={() => toggleSaveVideo(videoDetails)}
-            >
-              <BiListPlus /> {isSaved ? 'Saved' : 'Save'}
-            </button>
+              <button
+                type='button'
+                className={`video-btn ${isSaved ? 'active' : ''}`}
+                onClick={() => toggleSaveVideo(videoDetails)}
+              >
+                <BiListPlus />
+                {isSaved ? 'Saved' : 'Save'}
+              </button>
+            </div>
           </div>
-        </div>
 
-        <hr />
+          <hr />
 
-        {/* CHANNEL */}
-        <div className='video-page__channel'>
-          <img
-            src={videoDetails.channel.profileImageUrl}
-            alt='channel'
-            className='video-page__channel-img'
-          />
+          <div className='video-page__channel'>
+            <img
+              src={videoDetails.channel.profileImageUrl}
+              alt='channel'
+              className='video-page__channel-img'
+            />
 
-          <div>
-            <p className='video-page__channel-name'>
-              {videoDetails.channel.name}
-            </p>
-            <p className='video-page__subs'>
-              {videoDetails.channel.subscriberCount} subscribers
-            </p>
+            <div>
+              <p className='video-page__channel-name'>
+                {videoDetails.channel.name}
+              </p>
+              <p className='video-page__subs'>
+                {videoDetails.channel.subscriberCount} subscribers
+              </p>
+            </div>
           </div>
-        </div>
 
-        {/* DESCRIPTION */}
-        <p className='video-page__description'>{videoDetails.description}</p>
+          <p className='video-page__description'>{videoDetails.description}</p>
+        </div>
       </div>
     )
   }
 
-  renderContent = value => {
-    const {status} = this.state
+  renderVideoDetails = value => {
+    const {apiStatus} = this.state
 
-    switch (status) {
-      case apiStatus.LOADING:
-        return (
-          <div className='loader-container'>
-            <Loader type='ThreeDots' color='#888' />
-          </div>
-        )
-
-      case apiStatus.FAILURE:
-        return (
-          <div className='video-page__error'>
-            <h2>Failed to load video</h2>
-            <button type='button' onClick={this.fetchVideo}>
-              Retry
-            </button>
-          </div>
-        )
-
-      case apiStatus.SUCCESS:
+    switch (apiStatus) {
+      case apiStatusConstants.loading:
+        return this.renderLoader()
+      case apiStatusConstants.success:
         return this.renderVideo(value)
-
+      case apiStatusConstants.failure:
+        return this.renderFailure()
       default:
         return null
     }
@@ -166,21 +169,19 @@ class SpecificVideo extends Component {
           const {isDarkMode} = value
 
           return (
-            <>
+            <div className='app-container'>
               <Header />
               <div className='nav-sections-container'>
                 <LeftNavBar />
-
-                {/* MAIN */}
-                <main
+                <div
                   className={`video-page ${
                     isDarkMode ? 'video-page--dark' : ''
                   }`}
                 >
-                  {this.renderContent(value)}
-                </main>
+                  {this.renderVideoDetails(value)}
+                </div>
               </div>
-            </>
+            </div>
           )
         }}
       </BackgroundContext.Consumer>
@@ -188,4 +189,4 @@ class SpecificVideo extends Component {
   }
 }
 
-export default SpecificVideo
+export default VideoItemDetails
