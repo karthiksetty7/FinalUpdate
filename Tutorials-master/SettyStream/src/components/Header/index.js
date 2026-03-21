@@ -7,6 +7,8 @@ import BackgroundContext from '../../BackgroundContext'
 
 import logo from '../../SettyStream.png'
 
+import darkLogo from '../../SettyStreamdarkTheme.png'
+
 import './index.css'
 
 const Header = props => (
@@ -23,7 +25,11 @@ const Header = props => (
         <nav className={`header ${isDarkMode ? 'header--dark' : ''}`}>
           {/* LOGO */}
           <Link to='/' className='header__logo-container'>
-            <img src={logo} alt='website logo' className='header__logo' />
+            <img
+              src={isDarkMode ? darkLogo : logo}
+              alt='website logo'
+              className='header__logo'
+            />
           </Link>
 
           {/* RIGHT SIDE */}
