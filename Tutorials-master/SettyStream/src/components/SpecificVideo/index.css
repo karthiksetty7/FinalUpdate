@@ -1,3 +1,7 @@
+/* ========================= */
+/* VIDEO PAGE STYLES */
+/* ========================= */
+
 .video-page {
   flex: 1;
   padding: 20px;
@@ -45,14 +49,37 @@
   background: transparent;
   cursor: pointer;
   color: #64748b;
+  transition: color 0.3s;
 }
 
+/* Save button active */
 .video-btn.active {
-  color: #2563eb;
+  color: #2563eb; /* blue for saved */
 }
 
+/* Like button active */
+.video-btn.active-like {
+  color: #2563eb; /* blue like */
+  font-weight: bold;
+}
+
+/* Dislike button active */
+.video-btn.active-dislike {
+  color: #f43f5e; /* red dislike */
+  font-weight: bold;
+}
+
+/* Dark mode adjustments */
 .video-page--dark .video-btn {
   color: #cbd5f5;
+}
+
+.video-page--dark .video-btn.active-like {
+  color: #3b82f6; /* brighter blue in dark mode */
+}
+
+.video-page--dark .video-btn.active-dislike {
+  color: #f87171; /* brighter red in dark mode */
 }
 
 .video-page__channel {
@@ -94,7 +121,9 @@
   text-align: center;
 }
 
-/* MOBILE */
+/* ========================= */
+/* MOBILE STYLES */
+/* ========================= */
 
 @media (max-width: 768px) {
   .video-page {
@@ -136,4 +165,20 @@
   .video-page__description {
     font-size: 13px;
   }
+}
+
+.video-btn.active-like {
+  color: #2563eb;
+  font-weight: bold;
+}
+.video-btn.active-dislike {
+  color: #f43f5e;
+  font-weight: bold;
+}
+
+.video-page--dark .video-btn.active-like {
+  color: #3b82f6;
+}
+.video-page--dark .video-btn.active-dislike {
+  color: #f87171;
 }
