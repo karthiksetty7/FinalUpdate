@@ -14,18 +14,16 @@ const GamingList = props => (
       return (
         <li className='gaming-card'>
           <Link to={`/videos/${id}`} className='gaming-card__link'>
-            {/* THUMBNAIL */}
             <img
               src={thumbnailUrl}
               alt='video thumbnail'
               className='gaming-card__thumbnail'
             />
 
-            {/* CONTENT */}
             <div className='gaming-card__content'>
               <p
                 className={`gaming-card__title ${
-                  darkTheme ? 'text-light' : ''
+                  darkTheme ? 'gaming-card__title--dark' : ''
                 }`}
               >
                 {title}
