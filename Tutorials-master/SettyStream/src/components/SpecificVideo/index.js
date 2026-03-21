@@ -33,40 +33,38 @@ class VideoItemDetails extends Component {
     const {id} = match.params
 
     const jwtToken = Cookies.get('jwt_token')
-
     const url = `https://apis.ccbp.in/videos/${id}`
-
     const options = {
-      headers: {
-        Authorization: `Bearer ${jwtToken}`,
-      },
+      headers: {Authorization: `Bearer ${jwtToken}`},
       method: 'GET',
     }
 
-    const response = await fetch(url, options)
-    const data = await response.json()
-
-    if (response.ok) {
-      const updatedData = {
-        id: data.video_details.id,
-        title: data.video_details.title,
-        videoUrl: data.video_details.video_url,
-        thumbnailUrl: data.video_details.thumbnail_url,
-        viewCount: data.video_details.view_count,
-        description: data.video_details.description,
-        publishedAt: data.video_details.published_at,
-        channel: {
-          name: data.video_details.channel.name,
-          profileImageUrl: data.video_details.channel.profile_image_url,
-          subscriberCount: data.video_details.channel.subscriber_count,
-        },
+    try {
+      const response = await fetch(url, options)
+      const data = await response.json()
+      if (response.ok) {
+        const updatedData = {
+          id: data.video_details.id,
+          title: data.video_details.title,
+          videoUrl: data.video_details.video_url,
+          thumbnailUrl: data.video_details.thumbnail_url,
+          viewCount: data.video_details.view_count,
+          description: data.video_details.description,
+          publishedAt: data.video_details.published_at,
+          channel: {
+            name: data.video_details.channel.name,
+            profileImageUrl: data.video_details.channel.profile_image_url,
+            subscriberCount: data.video_details.channel.subscriber_count,
+          },
+        }
+        this.setState({
+          videoDetails: updatedData,
+          apiStatus: apiStatusConstants.success,
+        })
+      } else {
+        this.setState({apiStatus: apiStatusConstants.failure})
       }
-
-      this.setState({
-        videoDetails: updatedData,
-        apiStatus: apiStatusConstants.success,
-      })
-    } else {
+    } catch {
       this.setState({apiStatus: apiStatusConstants.failure})
     }
   }
@@ -88,9 +86,19 @@ class VideoItemDetails extends Component {
 
   renderVideo = value => {
     const {videoDetails} = this.state
-    const {toggleSaveVideo, savedVideos} = value
+    const {
+      toggleSaveVideo,
+      savedVideos,
+      likedVideos,
+      dislikedVideos,
+      likeVideo,
+      dislikeVideo,
+      removeLike,
+    } = value
 
     const isSaved = savedVideos.find(v => v.id === videoDetails.id)
+    const isLiked = likedVideos.find(v => v.id === videoDetails.id)
+    const isDisliked = dislikedVideos.find(v => v.id === videoDetails.id)
 
     return (
       <div className='video-page__container'>
@@ -103,21 +111,36 @@ class VideoItemDetails extends Component {
             <p>{videoDetails.viewCount} views</p>
 
             <div className='video-page__buttons'>
-              <button type='button' className='video-btn'>
+              {/* Like Button */}
+              <button
+                type='button'
+                className={`video-btn ${isLiked ? 'active-like' : ''}`}
+                onClick={() => {
+                  if (isLiked) removeLike(videoDetails)
+                  else likeVideo(videoDetails)
+                }}
+              >
                 <BiLike /> Like
               </button>
 
-              <button type='button' className='video-btn'>
+              {/* Dislike Button */}
+              <button
+                type='button'
+                className={`video-btn ${isDisliked ? 'active-dislike' : ''}`}
+                onClick={() => {
+                  dislikeVideo(videoDetails)
+                }}
+              >
                 <BiDislike /> Dislike
               </button>
 
+              {/* Save Button */}
               <button
                 type='button'
                 className={`video-btn ${isSaved ? 'active' : ''}`}
                 onClick={() => toggleSaveVideo(videoDetails)}
               >
-                <BiListPlus />
-                {isSaved ? 'Saved' : 'Save'}
+                <BiListPlus /> {isSaved ? 'Saved' : 'Save'}
               </button>
             </div>
           </div>
@@ -130,7 +153,6 @@ class VideoItemDetails extends Component {
               alt='channel'
               className='video-page__channel-img'
             />
-
             <div>
               <p className='video-page__channel-name'>
                 {videoDetails.channel.name}
@@ -149,7 +171,6 @@ class VideoItemDetails extends Component {
 
   renderVideoDetails = value => {
     const {apiStatus} = this.state
-
     switch (apiStatus) {
       case apiStatusConstants.loading:
         return this.renderLoader()
@@ -167,7 +188,6 @@ class VideoItemDetails extends Component {
       <BackgroundContext.Consumer>
         {value => {
           const {isDarkMode} = value
-
           return (
             <div className='app-container'>
               <Header />
