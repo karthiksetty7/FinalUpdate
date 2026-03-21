@@ -5,6 +5,7 @@ import {SiYoutubegaming} from 'react-icons/si'
 
 import Header from '../Header'
 import LeftNavBar from '../LeftNavBar'
+import GamingList from '../GamingList'
 import BackgroundContext from '../../BackgroundContext'
 
 import './index.css'
@@ -57,19 +58,7 @@ class Gaming extends Component {
     return (
       <ul className='gaming__grid'>
         {videos.map(video => (
-          <li key={video.id} className='gaming__card'>
-            <img
-              src={video.thumbnailUrl}
-              alt='gaming video'
-              className='gaming__thumbnail'
-            />
-
-            <h3 className='gaming__title'>{video.title}</h3>
-
-            <p className='gaming__views'>
-              {video.viewCount} Watching Worldwide
-            </p>
-          </li>
+          <GamingList key={video.id} eachVideo={video} />
         ))}
       </ul>
     )
@@ -113,7 +102,6 @@ class Gaming extends Component {
             <div className='nav-sections-container'>
               <LeftNavBar />
               <main className={`gaming ${isDarkMode ? 'gaming--dark' : ''}`}>
-                {/* HEADER */}
                 <div className='gaming__header'>
                   <SiYoutubegaming className='gaming__icon' />
                   <h1>Gaming</h1>
