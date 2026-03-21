@@ -1,9 +1,9 @@
-/* MAIN */
+/* MAIN PAGE */
 .common-page {
   flex: 1;
   padding: 20px;
   background-color: #f9f9f9;
-  overflow-y: auto; /* ✅ smooth scrolling */
+  overflow-y: auto;
 }
 
 .common-page--dark {
@@ -30,23 +30,30 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
+  padding: 0;
+  margin: 0;
 }
 
-/* EMPTY */
+/* Each card wrapper ensures uniform height */
+.common-page__grid > li {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* EMPTY STATE */
 .common-page__empty {
   text-align: center;
   margin-top: 50px;
 }
 
 /* ========================= */
-/* 📱 TABLET */
-/* ========================= */
-
+/* TABLET */
 @media (max-width: 768px) {
   .common-page {
     padding: 20px;
-    padding-top: 80px; /* ✅ header height */
-    padding-bottom: 80px; /* ✅ bottom navbar */
+    padding-top: 80px; /* header height */
+    padding-bottom: 80px; /* bottom navbar */
   }
 
   .common-page__grid {
@@ -55,14 +62,12 @@
 }
 
 /* ========================= */
-/* 📱 MOBILE */
-/* ========================= */
-
+/* MOBILE */
 @media (max-width: 480px) {
   .common-page {
     padding: 10px;
-    padding-top: 70px; /* ✅ header spacing */
-    padding-bottom: 70px; /* ✅ bottom navbar spacing */
+    padding-top: 70px; /* header spacing */
+    padding-bottom: 70px; /* bottom navbar spacing */
   }
 
   .common-page__grid {
