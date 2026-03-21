@@ -1,4 +1,4 @@
-import {BsMoon, BsSun} from 'react-icons/bs'
+import {BsMoon, BsSun, BsBoxArrowRight} from 'react-icons/bs'
 import {withRouter, Link} from 'react-router-dom'
 import Popup from 'reactjs-popup'
 import Cookies from 'js-cookie'
@@ -6,7 +6,6 @@ import Cookies from 'js-cookie'
 import BackgroundContext from '../../BackgroundContext'
 
 import logo from '../../SettyStream.png'
-
 import darkLogo from '../../SettyStreamdarkTheme.png'
 
 import './index.css'
@@ -21,6 +20,32 @@ const Header = props => (
         props.history.replace('/login')
       }
 
+      const renderPopup = close => (
+        <div
+          className={`header__popup ${isDarkMode ? 'header__popup--dark' : ''}`}
+        >
+          <p className='header__popup-text'>Are you sure you want to logout?</p>
+
+          <div className='header__popup-actions'>
+            <button
+              type='button'
+              className='btn btn--outline'
+              onClick={() => close()}
+            >
+              Cancel
+            </button>
+
+            <button
+              type='button'
+              className='btn btn--primary'
+              onClick={onLogout}
+            >
+              Confirm
+            </button>
+          </div>
+        </div>
+      )
+
       return (
         <nav className={`header ${isDarkMode ? 'header--dark' : ''}`}>
           {/* LOGO */}
@@ -34,7 +59,7 @@ const Header = props => (
 
           {/* RIGHT SIDE */}
           <div className='header__actions'>
-            {/* THEME BUTTON */}
+            {/* THEME */}
             <button
               type='button'
               className='header__icon-btn'
@@ -54,7 +79,7 @@ const Header = props => (
               className='header__profile'
             />
 
-            {/* LOGOUT POPUP */}
+            {/* DESKTOP LOGOUT */}
             <Popup
               modal
               trigger={
@@ -63,35 +88,22 @@ const Header = props => (
                 </button>
               }
             >
-              {close => (
-                <div
-                  className={`header__popup ${
-                    isDarkMode ? 'header__popup--dark' : ''
-                  }`}
+              {renderPopup}
+            </Popup>
+
+            {/* MOBILE LOGOUT ICON */}
+            <Popup
+              modal
+              trigger={
+                <button
+                  type='button'
+                  className='header__icon-btn header__logout-icon'
                 >
-                  <p className='header__popup-text'>
-                    Are you sure you want to logout?
-                  </p>
-
-                  <div className='header__popup-actions'>
-                    <button
-                      type='button'
-                      className='btn btn--outline'
-                      onClick={() => close()}
-                    >
-                      Cancel
-                    </button>
-
-                    <button
-                      type='button'
-                      className='btn btn--primary'
-                      onClick={onLogout}
-                    >
-                      Confirm
-                    </button>
-                  </div>
-                </div>
-              )}
+                  <BsBoxArrowRight size={22} />
+                </button>
+              }
+            >
+              {renderPopup}
             </Popup>
           </div>
         </nav>
