@@ -23,6 +23,9 @@ class VideoItemDetails extends Component {
     apiStatus: apiStatusConstants.initial,
   }
 
+  // Connect to BackgroundContext for history, like, dislike, etc.
+  static contextType = BackgroundContext
+
   componentDidMount() {
     this.getVideoDetails()
   }
@@ -31,7 +34,6 @@ class VideoItemDetails extends Component {
     this.setState({apiStatus: apiStatusConstants.loading})
     const {match} = this.props
     const {id} = match.params
-
     const jwtToken = Cookies.get('jwt_token')
     const url = `https://apis.ccbp.in/videos/${id}`
     const options = {
@@ -42,6 +44,7 @@ class VideoItemDetails extends Component {
     try {
       const response = await fetch(url, options)
       const data = await response.json()
+
       if (response.ok) {
         const updatedData = {
           id: data.video_details.id,
@@ -57,10 +60,14 @@ class VideoItemDetails extends Component {
             subscriberCount: data.video_details.channel.subscriber_count,
           },
         }
-        this.setState({
-          videoDetails: updatedData,
-          apiStatus: apiStatusConstants.success,
-        })
+
+        this.setState(
+          {videoDetails: updatedData, apiStatus: apiStatusConstants.success},
+          () => {
+            // Add video to history (persists in localStorage)
+            this.context.addToHistory(updatedData)
+          },
+        )
       } else {
         this.setState({apiStatus: apiStatusConstants.failure})
       }
