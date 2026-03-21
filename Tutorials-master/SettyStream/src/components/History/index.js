@@ -28,7 +28,9 @@ const History = () => (
             ) : (
               <ul className='common-page__grid'>
                 {historyVideos.map(v => (
-                  <VideosList key={v.video.id} eachVideo={v.video} />
+                  <li key={v.video.id}>
+                    <VideosList eachVideo={v.video} />
+                  </li>
                 ))}
               </ul>
             )}
