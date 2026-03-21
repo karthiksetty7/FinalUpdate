@@ -1,5 +1,4 @@
 import {Link} from 'react-router-dom'
-
 import {formatDistanceToNow} from 'date-fns'
 
 import BackgroundContext from '../../BackgroundContext'
@@ -16,13 +15,14 @@ const TrendingVideosList = props => (
       const {name, profileImageUrl} = channel
 
       return (
-        <Link to={`/videos/${id}`} className='nav-link'>
-          <li className='trending-each-video-card'>
+        <li className='trending-each-video-card'>
+          <Link to={`/videos/${id}`} className='nav-link'>
             <img
               src={thumbnailUrl}
               alt='video thumbnail'
               className='trending-thumbnail-img'
             />
+
             <div className='trending-video-profile-container'>
               {!darkTheme && (
                 <img
@@ -31,6 +31,7 @@ const TrendingVideosList = props => (
                   className='trending-profile-img'
                 />
               )}
+
               <div
                 className={
                   darkTheme
@@ -46,8 +47,8 @@ const TrendingVideosList = props => (
                 </p>
               </div>
             </div>
-          </li>
-        </Link>
+          </Link>
+        </li>
       )
     }}
   </BackgroundContext.Consumer>
