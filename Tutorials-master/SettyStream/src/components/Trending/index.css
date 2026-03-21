@@ -1,0 +1,101 @@
+/* MAIN */
+.trending {
+  flex: 1;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.trending--dark {
+  background-color: #181818;
+  color: #fff;
+}
+
+/* HEADER */
+.trending__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.trending__icon {
+  color: red;
+  font-size: 24px;
+}
+
+/* LIST */
+.trending__list {
+  list-style: none;
+  padding: 0;
+}
+
+/* CARD */
+.trending__card {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  transition: transform 0.3s;
+}
+
+.trending__card:hover {
+  transform: scale(1.02);
+}
+
+/* THUMBNAIL */
+.trending__thumbnail {
+  width: 300px;
+  border-radius: 10px;
+}
+
+/* CONTENT */
+.trending__content {
+  flex: 1;
+}
+
+/* TITLE */
+.trending__title {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+/* CHANNEL */
+.trending__channel {
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* META */
+.trending__meta {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+/* ERROR */
+.trending__error {
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* ========================= */
+/* 📱 RESPONSIVE */
+/* ========================= */
+
+@media (max-width: 768px) {
+  .trending__card {
+    flex-direction: column;
+  }
+
+  .trending__thumbnail {
+    width: 100%;
+  }
+
+  .trending__title {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .trending {
+    padding: 10px;
+  }
+}

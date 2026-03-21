@@ -1,0 +1,43 @@
+.trending-each-video-card {
+  width: 40vw;
+  height: 20vh;
+  display: flex;
+  box-shadow: 0px 0px 1px 0px;
+  margin-right: 30px;
+  margin-bottom: 30px;
+}
+
+.trending-thumbnail-img {
+  height: 20vh;
+  width: 20vw;
+}
+
+.trending-video-profile-container {
+  margin-top: 10px;
+  display: flex;
+}
+
+.trending-profile-img {
+  height: 5vh;
+  margin-right: 10px;
+}
+
+.trending-video-info-container,
+.dark-trending-video-info-container {
+  margin-top: -9px;
+}
+
+.dark-trending-video-info-container {
+  margin-left: 10px;
+}
+
+.trending-video-title {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.trending-video-name,
+.trending-video-views {
+  font-size: 13px;
+  color: #616e7c;
+}

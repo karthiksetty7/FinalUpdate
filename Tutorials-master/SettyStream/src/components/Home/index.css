@@ -1,0 +1,115 @@
+/* MAIN */
+.home {
+  flex: 1;
+  padding: 20px;
+  background-color: #f9f9f9;
+  overflow-y: auto;
+}
+
+.home--dark {
+  background-color: #181818;
+  color: #fff;
+}
+
+/* BANNER */
+.home__banner {
+  position: relative;
+  background-image: url('https://assets.ccbp.in/frontend/react-js/nxt-watch-banner-bg.png');
+  background-size: cover;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.home__banner-logo {
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+.home__banner-close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.home__banner-btn {
+  margin-top: 10px;
+  padding: 6px 12px;
+  border: 1px solid #000;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* SEARCH */
+.home__search {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.home__search input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.home__search button {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+/* GRID */
+.home__videos-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+/* EMPTY */
+.home__empty,
+.home__error {
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* LOADER */
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+}
+
+/* ========================= */
+/* 📱 RESPONSIVE */
+/* ========================= */
+
+@media (max-width: 768px) {
+  .home {
+    padding: 10px;
+  }
+
+  .home__videos-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .home__videos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home__banner-logo {
+    height: 40px;
+  }
+}
+
+.home__banner-text {
+  color: #000; /* light mode */
+}
+
+
