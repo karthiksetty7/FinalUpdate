@@ -2,11 +2,13 @@
   flex: 1;
   padding: 20px;
   background-color: #f9f9f9;
+  min-height: 100vh; /* ✅ FIX: ensures full height */
 }
 
 .common-page--dark {
   background-color: #181818;
   color: #fff;
+  min-height: 100vh; /* ✅ FIX: removes white gaps in dark mode */
 }
 
 /* HEADER */
@@ -41,17 +43,24 @@
 /* ========================= */
 
 @media (max-width: 768px) {
+  .common-page {
+    padding-top: 80px; /* ✅ FIX: header space */
+    padding-bottom: 80px; /* ✅ FIX: bottom navbar space */
+  }
+
   .common-page__grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 480px) {
-  .common-page__grid {
-    grid-template-columns: 1fr;
-  }
-
   .common-page {
     padding: 10px;
+    padding-top: 70px; /* ✅ FIX */
+    padding-bottom: 70px; /* ✅ FIX */
+  }
+
+  .common-page__grid {
+    grid-template-columns: 1fr;
   }
 }
