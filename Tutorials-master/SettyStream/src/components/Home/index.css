@@ -91,6 +91,8 @@
 @media (max-width: 768px) {
   .home {
     padding: 10px;
+    padding-top: 80px;   /* ✅ FIX: space for header */
+    padding-bottom: 80px; /* ✅ FIX: space for bottom navbar */
   }
 
   .home__videos-grid {
@@ -99,6 +101,11 @@
 }
 
 @media (max-width: 480px) {
+  .home {
+    padding-top: 70px;   /* ✅ FIX */
+    padding-bottom: 70px; /* ✅ FIX */
+  }
+
   .home__videos-grid {
     grid-template-columns: 1fr;
   }
@@ -111,5 +118,3 @@
 .home__banner-text {
   color: #000; /* light mode */
 }
-
-
