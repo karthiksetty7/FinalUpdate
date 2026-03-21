@@ -29,7 +29,9 @@ const Header = props => (
           <div className='header__popup-actions'>
             <button
               type='button'
-              className='btn btn--outline'
+              className={`btn btn--outline ${
+                isDarkMode ? 'btn--outline-dark' : ''
+              }`}
               onClick={() => close()}
             >
               Cancel
@@ -99,7 +101,10 @@ const Header = props => (
                   type='button'
                   className='header__icon-btn header__logout-icon'
                 >
-                  <BsBoxArrowRight size={22} />
+                  <BsBoxArrowRight
+                    size={22}
+                    color={isDarkMode ? '#ffffff' : '#000000'}
+                  />
                 </button>
               }
             >
