@@ -38,30 +38,32 @@ class Home extends Component {
     const {activeSearch} = this.state
     const jwtToken = Cookies.get('jwt_token')
 
-    const response = await fetch(
-      `https://apis.ccbp.in/videos/all?search=${activeSearch}`,
-      {
-        headers: {Authorization: `Bearer ${jwtToken}`},
-      },
-    )
-
-    if (response.ok) {
-      const data = await response.json()
-
-      const updated = data.videos.map(v => ({
-        id: v.id,
-        title: v.title,
-        thumbnailUrl: v.thumbnail_url,
-        viewCount: v.view_count,
-        publishedAt: v.published_at,
-        channel: {
-          name: v.channel.name,
-          profileImageUrl: v.channel.profile_image_url,
+    try {
+      const response = await fetch(
+        `https://apis.ccbp.in/videos/all?search=${activeSearch}`,
+        {
+          headers: {Authorization: `Bearer ${jwtToken}`},
         },
-      }))
+      )
 
-      this.setState({videos: updated, status: apiStatus.SUCCESS})
-    } else {
+      if (response.ok) {
+        const data = await response.json()
+        const updated = data.videos.map(v => ({
+          id: v.id,
+          title: v.title,
+          thumbnailUrl: v.thumbnail_url,
+          viewCount: v.view_count,
+          publishedAt: v.published_at,
+          channel: {
+            name: v.channel.name,
+            profileImageUrl: v.channel.profile_image_url,
+          },
+        }))
+        this.setState({videos: updated, status: apiStatus.SUCCESS})
+      } else {
+        this.setState({status: apiStatus.FAILURE})
+      }
+    } catch {
       this.setState({status: apiStatus.FAILURE})
     }
   }
@@ -105,14 +107,19 @@ class Home extends Component {
       case apiStatus.LOADING:
         return (
           <div className='loader-container'>
-            <Loader type='ThreeDots' color='#888' />
+            <Loader type='ThreeDots' color={isDarkMode ? '#fff' : '#888'} />
           </div>
         )
 
       case apiStatus.FAILURE:
         return (
-          <div className='home__error'>
-            <h2>Something went wrong</h2>
+          <div className={`home__error ${isDarkMode ? 'home--dark' : ''}`}>
+            <img
+              src='https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view.png'
+              alt='failure view'
+            />
+            <h2>Oops! Something went wrong</h2>
+            <p>We are having some trouble. Please try again.</p>
             <button type='button' onClick={this.fetchVideos}>
               Retry
             </button>
@@ -135,7 +142,11 @@ class Home extends Component {
 
                 <img src={logo} alt='logo' className='home__banner-logo' />
 
-                <p className={isDarkMode && 'home__banner-text'}>
+                <p
+                  className={`home__banner-text ${
+                    isDarkMode ? 'home--dark-banner-text' : ''
+                  }`}
+                >
                   Buy Premium Plans with UPI
                 </p>
 
@@ -153,7 +164,6 @@ class Home extends Component {
                 value={searchInput}
                 onChange={e => this.setState({searchInput: e.target.value})}
               />
-
               <button type='button' onClick={this.onSearch}>
                 <MdSearch />
               </button>
