@@ -5,6 +5,7 @@ import {FaFire} from 'react-icons/fa'
 
 import Header from '../Header'
 import LeftNavBar from '../LeftNavBar'
+import TrendingVideosList from '../TrendingVideosList'
 import BackgroundContext from '../../BackgroundContext'
 
 import './index.css'
@@ -31,9 +32,12 @@ class Trending extends Component {
 
     const jwtToken = Cookies.get('jwt_token')
 
-    const response = await fetch('https://apis.ccbp.in/videos/trending', {
-      headers: {Authorization: `Bearer ${jwtToken}`},
-    })
+    const response = await fetch(
+      'https://apis.ccbp.in/videos/trending',
+      {
+        headers: {Authorization: `Bearer ${jwtToken}`},
+      },
+    )
 
     if (response.ok) {
       const data = await response.json()
@@ -62,23 +66,10 @@ class Trending extends Component {
     return (
       <ul className='trending__list'>
         {videos.map(video => (
-          <li key={video.id} className='trending__card'>
-            <img
-              src={video.thumbnailUrl}
-              alt='thumbnail'
-              className='trending__thumbnail'
-            />
-
-            <div className='trending__content'>
-              <h3 className='trending__title'>{video.title}</h3>
-
-              <p className='trending__channel'>{video.channel.name}</p>
-
-              <p className='trending__meta'>
-                {video.viewCount} views • {video.publishedAt}
-              </p>
-            </div>
-          </li>
+          <TrendingVideosList
+            key={video.id}
+            eachVideo={video}
+          />
         ))}
       </ul>
     )
@@ -99,7 +90,10 @@ class Trending extends Component {
         return (
           <div className='trending__error'>
             <h2>Failed to load Trending</h2>
-            <button type='button' onClick={this.fetchTrending}>
+            <button
+              type='button'
+              onClick={this.fetchTrending}
+            >
               Retry
             </button>
           </div>
@@ -122,9 +116,10 @@ class Trending extends Component {
             <div className='nav-sections-container'>
               <LeftNavBar />
               <main
-                className={`trending ${isDarkMode ? 'trending--dark' : ''}`}
+                className={`trending ${
+                  isDarkMode ? 'trending--dark' : ''
+                }`}
               >
-                {/* HEADER */}
                 <div className='trending__header'>
                   <FaFire className='trending__icon' />
                   <h1>Trending</h1>
