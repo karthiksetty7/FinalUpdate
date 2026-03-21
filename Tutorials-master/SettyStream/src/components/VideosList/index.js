@@ -9,10 +9,8 @@ const VideosList = props => (
   <BackgroundContext.Consumer>
     {({isDarkMode}) => {
       const {eachVideo} = props
-
       const {id, title, thumbnailUrl, viewCount, publishedAt, channel} =
         eachVideo
-
       const {name, profileImageUrl} = channel
 
       return (
