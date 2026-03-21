@@ -24,7 +24,7 @@
 }
 
 .header__logo {
-  height: 55px; /* 🔥 Increased size */
+  height: 40px; /* 🔥 Increased size */
   transition: transform 0.3s ease;
 }
 
