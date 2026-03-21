@@ -21,14 +21,15 @@ class App extends Component {
     isDarkMode: false,
     savedVideos: JSON.parse(localStorage.getItem('savedVideos')) || [],
     likedVideos: JSON.parse(localStorage.getItem('likedVideos')) || [],
+    dislikedVideos: JSON.parse(localStorage.getItem('dislikedVideos')) || [],
     historyVideos: JSON.parse(localStorage.getItem('historyVideos')) || [],
   }
 
   componentDidUpdate() {
-    const {savedVideos, likedVideos, historyVideos} = this.state
-
+    const {savedVideos, likedVideos, dislikedVideos, historyVideos} = this.state
     localStorage.setItem('savedVideos', JSON.stringify(savedVideos))
     localStorage.setItem('likedVideos', JSON.stringify(likedVideos))
+    localStorage.setItem('dislikedVideos', JSON.stringify(dislikedVideos))
     localStorage.setItem('historyVideos', JSON.stringify(historyVideos))
   }
 
@@ -39,7 +40,6 @@ class App extends Component {
   toggleSaveVideo = video => {
     this.setState(prev => {
       const exists = prev.savedVideos.find(v => v.id === video.id)
-
       return {
         savedVideos: exists
           ? prev.savedVideos.filter(v => v.id !== video.id)
@@ -52,12 +52,29 @@ class App extends Component {
     this.setState(prev => {
       const exists = prev.likedVideos.find(v => v.id === video.id)
       if (exists) return null
-
-      return {likedVideos: [...prev.likedVideos, video]}
+      return {
+        likedVideos: [...prev.likedVideos, video],
+        dislikedVideos: prev.dislikedVideos.filter(v => v.id !== video.id),
+      }
     })
   }
 
   dislikeVideo = video => {
+    this.setState(prev => {
+      const exists = prev.dislikedVideos.find(v => v.id === video.id)
+      if (exists) {
+        return {
+          dislikedVideos: prev.dislikedVideos.filter(v => v.id !== video.id),
+        }
+      }
+      return {
+        dislikedVideos: [...prev.dislikedVideos, video],
+        likedVideos: prev.likedVideos.filter(v => v.id !== video.id),
+      }
+    })
+  }
+
+  removeLike = video => {
     this.setState(prev => ({
       likedVideos: prev.likedVideos.filter(v => v.id !== video.id),
     }))
@@ -65,12 +82,10 @@ class App extends Component {
 
   addToHistory = video => {
     const today = new Date().toDateString()
-
     this.setState(prev => {
       const updatedHistory = prev.historyVideos.filter(
         each => each.video.id !== video.id,
       )
-
       return {
         historyVideos: [{date: today, video}, ...updatedHistory],
       }
@@ -86,6 +101,7 @@ class App extends Component {
           toggleSaveVideo: this.toggleSaveVideo,
           likeVideo: this.likeVideo,
           dislikeVideo: this.dislikeVideo,
+          removeLike: this.removeLike,
           addToHistory: this.addToHistory,
         }}
       >
