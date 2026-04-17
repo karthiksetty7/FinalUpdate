@@ -4,6 +4,9 @@
   padding: 20px;
   background-color: #f9f9f9;
   overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
 }
 
 .common-page--dark {
@@ -43,8 +46,12 @@
 
 /* EMPTY STATE */
 .common-page__empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  margin-top: 50px;
 }
 
 /* ========================= */
