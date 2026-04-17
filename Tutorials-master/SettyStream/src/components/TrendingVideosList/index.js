@@ -8,40 +8,38 @@ import './index.css'
 const TrendingVideosList = props => (
   <BackgroundContext.Consumer>
     {value => {
-      const {darkTheme} = value
+      const {isDarkMode} = value
       const {eachVideo} = props
       const {channel, publishedAt, thumbnailUrl, title, viewCount, id} =
         eachVideo
       const {name, profileImageUrl} = channel
 
       return (
-        <li className='trending-each-video-card'>
-          <Link to={`/videos/${id}`} className='nav-link'>
+        <li className="trending-each-video-card">
+          <Link to={`/videos/${id}`} className="nav-link">
             <img
               src={thumbnailUrl}
-              alt='video thumbnail'
-              className='trending-thumbnail-img'
+              alt="video thumbnail"
+              className="trending-thumbnail-img"
             />
 
-            <div className='trending-video-profile-container'>
-              {!darkTheme && (
-                <img
-                  src={profileImageUrl}
-                  alt='channel logo'
-                  className='trending-profile-img'
-                />
-              )}
+            <div className="trending-video-profile-container">
+              <img
+                src={profileImageUrl}
+                alt="channel logo"
+                className="trending-profile-img"
+              />
 
               <div
                 className={
-                  darkTheme
+                  isDarkMode
                     ? 'dark-trending-video-info-container'
                     : 'trending-video-info-container'
                 }
               >
-                <p className='trending-video-title'>{title}</p>
-                <p className='trending-video-name'>{name}</p>
-                <p className='trending-video-views'>
+                <p className="trending-video-title">{title}</p>
+                <p className="trending-video-name">{name}</p>
+                <p className="trending-video-views">
                   {viewCount} Views •{' '}
                   {formatDistanceToNow(new Date(publishedAt))}
                 </p>
